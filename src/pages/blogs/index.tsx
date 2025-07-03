@@ -50,6 +50,6 @@ export const getStaticProps: GetStaticProps<BlogPageProps> = async () => {
         props: {
             blogs: rows,
         },
-        revalidate: 10, // ISR: regenerate every 10 seconds
+        revalidate: 10, 
     };
 };

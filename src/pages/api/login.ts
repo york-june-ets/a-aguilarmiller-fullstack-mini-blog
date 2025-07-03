@@ -22,7 +22,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
-        // Success: return the user (omit password in real app)
         const user = users[0];
         return res.status(200).json({ id: user.id, email: user.email });
     } catch (err) {
