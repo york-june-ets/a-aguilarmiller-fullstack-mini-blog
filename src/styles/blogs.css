@@ -1,0 +1,91 @@
+h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.button {
+    margin-top: 0.5rem;
+    background-color: #b99985;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-container {
+    margin-top: 1rem;
+}
+
+.cancel-button {
+    margin-left: 1rem;
+}
+
+.card-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card-image {
+    width: 100%;
+    border-radius: 4px;
+}
+
+.card-item {
+    background-color: #d8c4b6;
+    padding: 1rem;
+    max-width: 300px;
+    text-align: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.container {
+    background-color: #d8c4b6;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.edit-button {
+    margin-top: 1rem;
+}
+
+.error {
+    color: red;
+}
+
+.form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.post {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.post-container {
+    background-color: #d8c4b6;
+    min-height: 100vh;
+    padding: 2rem;
+}

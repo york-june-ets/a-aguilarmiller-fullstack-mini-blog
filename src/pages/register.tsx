@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "@/contexts/userContext";
+import '../styles/register.css'
 
 export default function Register() {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const { setUser } = useUser();
     const router = useRouter();
 
@@ -39,17 +40,30 @@ export default function Register() {
     };
 
     return (
-        <>
-            <h1>Register</h1>
-            {loading && <div>Loading...</div>}
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email: </label>
-                <input type="email" name="email" required onChange={(e) => setEmail(e.target.value)} />
-                <label>Password: </label>
-                <input type="password" name="password" required onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit">Submit</button>
+        <div className="container">
+            <form className="form" onSubmit={handleSubmit}>
+                <h1>Register</h1>
+                {loading && <p>Loading...</p>}
+                <label>Email:</label>
+                <input
+                    type="email"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="input-style"
+                />
+                <label>Password:</label>
+                <input
+                    type="password"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="input-style"
+                />
+                <div className="button-container">
+                    <button type="submit" className="button">Submit</button>
+                    <button type="button" className="button" onClick={() => router.push('/')}>Back to Login</button>
+                </div>
+                {error && <p className="error">{error}</p>}
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-        </>
+        </div>
     );
 }
