@@ -12,7 +12,7 @@ export default function BlogMainPage({ blogs }: BlogPageProps) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [createPost, setCreatePost] = useState(false);
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const router = useRouter();
 
     useEffect(() => {
@@ -50,7 +50,10 @@ export default function BlogMainPage({ blogs }: BlogPageProps) {
 
     return (
         <div className="container">
-            <button className="button" onClick={() => setCreatePost(true)}>New Post</button>
+            <div className="button-container">
+                <button className="button" onClick={() => setCreatePost(true)}>New Post</button>
+                <button className="button" onClick={() => setUser(null)}>Log out</button>
+            </div>
             <h1>The Latest</h1>
 
             {createPost && (
