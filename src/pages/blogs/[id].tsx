@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useUser } from '@/contexts/userContext';
 import { query } from '@/pages/api/_helper';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import Post from '@/components/blogs/Post';
+import EditPost from '@/components/blogs/EditPost';
 
 
 interface Blog {
@@ -18,99 +18,26 @@ interface BlogPageProps {
 }
 
 export default function BlogPost({ blog }: BlogPageProps) {
-    const { user } = useUser();
     const [editing, setEditing] = useState(false);
     const [title, setTitle] = useState(blog.title);
     const [content, setContent] = useState(blog.content);
     const [error, setError] = useState('');
 
-    const router = useRouter();
+    const editPostProps = {
+        title, blog, content, setEditing, setError
+    }
 
-    const handleEditSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const res = await fetch(`/api/blogs/${blog.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, content, userId: user?.id }),
-            });
-
-            if (!res.ok) {
-                const { error } = await res.json();
-                setError(error);
-                return;
-            }
-
-            const updated = await res.json();
-            setTitle(updated.title);
-            setContent(updated.content);
-            setEditing(false);
-        } catch (err) {
-            console.error(err);
-            setError('Failed to update blog');
-        }
-    };
-
-    const handleDeleteSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            const res = await fetch(`/api/blogs/${blog.id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: user?.id }),
-            });
-
-            if (!res.ok) {
-                const { error } = await res.json();
-                setError(error || 'Delete failed');
-                return;
-            }
-            router.push('/blogs');
-
-        } catch (err) {
-            console.error(err);
-            setError('Delete post failed');
-        }
-    };
+    const postProps = {
+        blog, title, setTitle, content, setContent, setEditing, setError, error
+    }
 
 
     return (
         <div className='post-container'>
             {!editing ? (
-                <div className='post'>
-                    <h1>{title}</h1>
-                    <p><em>by {blog.author}</em></p>
-                    <p>{content}</p>
-                    <div className='button-container'>
-                        <button className='button' onClick={() => router.push('/blogs')}>Return to blog page</button>
-                        {user?.id === blog.user_id && (
-                            <>
-                                <button onClick={() => setEditing(true)} className='button'>Edit Post</button>
-                                <button className='button' onClick={handleDeleteSubmit}>Delete Post</button>
-                            </>
-                        )}
-                    </div>
-                </div>
+                <EditPost {...editPostProps} />
             ) : (
-                <form onSubmit={handleEditSubmit} className='form'>
-                    <h2>Edit Post</h2>
-                    <input
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className='input'
-                    />
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        rows={8}
-                    />
-                    <div className='button-container'>
-                        <button className='button' type="submit">Save</button>
-                        <button className='button' type="button" onClick={() => setEditing(false)}>Cancel</button>
-                    </div>
-                    {error && <p className='error'>{error}</p>}
-                </form>
+                <Post {...postProps} />
             )}
         </div>
     );
