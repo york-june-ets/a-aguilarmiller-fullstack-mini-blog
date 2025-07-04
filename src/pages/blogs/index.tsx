@@ -2,12 +2,16 @@ import { GetStaticProps } from "next";
 import Link from "next/link";
 import { query } from "../api/_helper";
 import { useUser } from "@/contexts/userContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { BlogPageProps } from "../../../types/types";
-import '../../styles/blogs.css'
+import '../../styles/blogs.css';
 
 export default function BlogMainPage({ blogs }: BlogPageProps) {
+    const [error, setError] = useState('');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [createPost, setCreatePost] = useState(false);
     const { user } = useUser();
     const router = useRouter();
 
@@ -19,9 +23,69 @@ export default function BlogMainPage({ blogs }: BlogPageProps) {
 
     if (!user) return <div>Loading...</div>;
 
+    const handleCreatePost = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const res = await fetch('/api/blogs', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.id, title, content }),
+            });
+
+            if (!res.ok) {
+                const { error } = await res.json();
+                setError(error || 'Failed to create post');
+                return;
+            }
+
+            const newPost = await res.json();
+            router.push(`/blogs/${newPost.id}`);
+
+        } catch (err) {
+            console.error(err);
+            setError('Failed to create post');
+        }
+    };
+
     return (
         <div className="container">
+            <button className="button" onClick={() => setCreatePost(true)}>New Post</button>
             <h1>The Latest</h1>
+
+            {createPost && (
+                <form onSubmit={handleCreatePost} className='form'>
+                    <h2>Create Post</h2>
+                    <input
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className='input'
+                        placeholder="Post title"
+                    />
+                    <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        rows={8}
+                        placeholder="Write your content here..."
+                    />
+                    <div className='button-container'>
+                        <button className="button" type="submit">Save</button>
+                        <button
+                            className='button'
+                            type="button"
+                            onClick={() => {
+                                setCreatePost(false);
+                                setTitle('');
+                                setContent('');
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                    {error && <p className='error'>{error}</p>}
+                </form>
+            )}
+
             <div className="card-container">
                 {blogs.map((blog, index) => (
                     <div
@@ -46,9 +110,7 @@ export default function BlogMainPage({ blogs }: BlogPageProps) {
                         <h2>{blog.title}</h2>
                         <p>Sample small text. Lorem ipsum dolor sit amet.</p>
                         <Link href={`/blogs/${blog.id}`}>
-                            <button className="button">
-                                Read More
-                            </button>
+                            <button className="button">Read More</button>
                         </Link>
                     </div>
                 ))}
@@ -58,10 +120,12 @@ export default function BlogMainPage({ blogs }: BlogPageProps) {
 }
 
 const PLACEHOLDER_IMAGES = [
-    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/edb005e4-13cd-41a6-99cc-03bdff0198a4/ddw80u0-d2d2b4e1-9c31-4df4-94ad-3e5ed0e8d8ab.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2VkYjAwNWU0LTEzY2QtNDFhNi05OWNjLTAzYmRmZjAxOThhNFwvZGR3ODB1MC1kMmQyYjRlMS05YzMxLTRkZjQtOTRhZC0zZTVlZDBlOGQ4YWIuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.J40gUeAZH_CNH57smLgNxBGJW_8ld-fXMYUvPYwMGek",
     "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80",
-    "https://img.freepik.com/premium-photo/sunset-beach-background-png-aesthetic-transparent-design_53876-1029940.jpg?semt=ais_hybrid&w=740",
-    "https://images.unsplash.com/photo-1530103043960-ef38714abb15?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWVzdGhldGljfGVufDB8fDB8fHww",
+    "https://img.freepik.com/premium-photo/sunset-beach-background-png-aesthetic-transparent-design_53876-1029940.jpg",
+    "https://images.unsplash.com/photo-1530103043960-ef38714abb15?fm=jpg&q=60&w=3000",
+    "https://i.pinimg.com/736x/5d/3a/b4/5d3ab4df7b9b3b33a620e39dc7a34d54.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIU8HVLEPnmmodwWzCVPhV6UvsaQpZFLErxw&s",
+    "https://s.studiobinder.com/wp-content/uploads/2021/02/Natural-light-%E2%80%94-Aesthetic-pictures-of-people.jpg"
 ];
 
 export const getStaticProps: GetStaticProps<BlogPageProps> = async () => {
@@ -79,3 +143,5 @@ export const getStaticProps: GetStaticProps<BlogPageProps> = async () => {
         revalidate: 10,
     };
 };
+
+
