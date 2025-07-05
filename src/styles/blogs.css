@@ -69,13 +69,10 @@ textarea {
     color: red;
 }
 
-.form {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
+.hidden {
+    display: none;
 }
+
 
 .input {
     width: 100%;
@@ -95,4 +92,12 @@ textarea {
     background-color: #d8c4b6;
     min-height: 100vh;
     padding: 2rem;
+}
+
+.visable {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
 }

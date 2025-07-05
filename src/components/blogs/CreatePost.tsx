@@ -43,38 +43,36 @@ export default function CreatePost({ createPost, title, setTitle, content, setCo
 
     return (
         <>
-            {createPost && (
-                <form onSubmit={handleCreatePost} className='form'>
-                    <h2>Create Post</h2>
-                    <input
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className='input'
-                        placeholder="Post title"
-                    />
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        rows={8}
-                        placeholder="Write your content here..."
-                    />
-                    <div className='button-container'>
-                        <button className="button" type="submit">Save</button>
-                        <button
-                            className='button'
-                            type="button"
-                            onClick={() => {
-                                setCreatePost(false);
-                                setTitle('');
-                                setContent('');
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                    {error && <p className='error'>{error}</p>}
-                </form>
-            )}
+            <form onSubmit={handleCreatePost} className={createPost ? 'visable' : 'hidden'}>
+                <h2>Create Post</h2>
+                <input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className='input'
+                    placeholder="Post title"
+                />
+                <textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    rows={8}
+                    placeholder="Write your content here..."
+                />
+                <div className='button-container'>
+                    <button className="button" type="submit">Save</button>
+                    <button
+                        className='button'
+                        type="button"
+                        onClick={() => {
+                            setCreatePost(false);
+                            setTitle('');
+                            setContent('');
+                        }}
+                    >
+                        Cancel
+                    </button>
+                </div>
+                {error && <p className='error'>{error}</p>}
+            </form>
         </>
     )
 }
