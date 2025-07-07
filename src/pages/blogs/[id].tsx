@@ -1,33 +1,25 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { query } from '@/pages/api/_helper';
+import { Blog } from '../../../types/types';
 import { useState } from 'react';
-import Post from '@/components/blogs/EditPost';
-import EditPost from '@/components/blogs/Post';
-
-
-interface Blog {
-    id: number;
-    title: string;
-    content: string;
-    author: string;
-    user_id: number;
-}
+import Post from '@/components/blogs/Post';
+import EditPost from '@/components/blogs/EditPost';
 
 interface BlogPageProps {
     blog: Blog;
 }
 
 export default function BlogPost({ blog }: BlogPageProps) {
-    const [editing, setEditing] = useState(false);
-    const [title, setTitle] = useState(blog.title);
-    const [content, setContent] = useState(blog.content);
-    const [error, setError] = useState('');
+    const [editing, setEditing] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>(blog.title);
+    const [content, setContent] = useState<string>(blog.content);
+    const [error, setError] = useState<string>('');
 
-    const editPostProps = {
+    const postProps = {
         title, blog, content, setEditing, setError
     }
 
-    const postProps = {
+    const editPostProps = {
         blog, title, setTitle, content, setContent, setEditing, setError, error
     }
 
@@ -35,9 +27,9 @@ export default function BlogPost({ blog }: BlogPageProps) {
     return (
         <div className='post-container'>
             {!editing ? (
-                <EditPost {...editPostProps} />
-            ) : (
                 <Post {...postProps} />
+            ) : (
+                <EditPost {...editPostProps} />
             )}
         </div>
     );

@@ -1,11 +1,11 @@
 import Link from "next/link";
+import { Blog, BlogPageProps } from "../../../types/types";
 
-export default function BlogList({ blogs }: any) {
+export default function BlogList({ blogs }: BlogPageProps) {
 
-    console.log(blogs)
     return (
         <div className="card-container">
-            {blogs.map((blog: any, index: any) => (
+            {blogs.map((blog: Blog, index: number) => (
                 <div
                     key={blog.id}
                     className="card-item"

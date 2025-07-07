@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 
 interface CreatePostProps {
     title: string;
-    setTitle: (title: string) => void;
+    setTitle: React.Dispatch<React.SetStateAction<string>>;
     content: string;
-    setContent: (content: string) => void;
+    setContent: React.Dispatch<React.SetStateAction<string>>;
     error: string;
-    setError: any;
+    setError: React.Dispatch<React.SetStateAction<string>>;
     createPost: boolean;
-    setCreatePost: (val: boolean) => void;
+    setCreatePost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function CreatePost({ createPost, title, setTitle, content, setContent, setCreatePost, error, setError }: CreatePostProps) {

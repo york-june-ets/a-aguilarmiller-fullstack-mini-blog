@@ -1,10 +1,11 @@
 import { useUser } from "@/contexts/userContext";
+import { Blog } from "../../../types/types";
 
 interface PostProps {
-    blog: any; title: any; setTitle: any; content: any; setContent: any; setEditing: any; setError: any; error: any
+    blog: Blog; title: string; setTitle: React.Dispatch<React.SetStateAction<string>>; content: string; setContent: React.Dispatch<React.SetStateAction<string>>; setEditing: React.Dispatch<React.SetStateAction<boolean>>; setError: React.Dispatch<React.SetStateAction<string>>; error: string
 }
 
-export default function Post({ blog, title, setTitle, content, setContent, setEditing, setError, error }: PostProps) {
+export default function EditPost({ blog, title, setTitle, content, setContent, setEditing, setError, error }: PostProps) {
     const { user } = useUser()
 
     const handleEditSubmit = async (e: React.FormEvent) => {

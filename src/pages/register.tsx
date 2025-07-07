@@ -4,10 +4,10 @@ import { useUser } from "@/contexts/userContext";
 import '../styles/register.css'
 
 export default function Register() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
     const { setUser } = useUser();
     const router = useRouter();
 

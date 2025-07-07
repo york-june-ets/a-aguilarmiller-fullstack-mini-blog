@@ -1,15 +1,16 @@
 import { useUser } from '@/contexts/userContext';
 import { useRouter } from 'next/router';
+import { Blog } from '../../../types/types';
 
 interface EditPostProps {
     title: string;
-    blog: any;
-    content: any;
-    setEditing: any;
-    setError: any;
+    blog: Blog;
+    content: string;
+    setEditing: React.Dispatch<React.SetStateAction<boolean>>;
+    setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function EditPost({ title, blog, content, setEditing, setError }: EditPostProps) {
+export default function Post({ title, blog, content, setEditing, setError }: EditPostProps) {
     const { user } = useUser()
     const router = useRouter();
 

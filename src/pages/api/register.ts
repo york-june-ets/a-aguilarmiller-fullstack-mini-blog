@@ -20,12 +20,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const newUser = rows[0];
         return res.status(201).json(newUser);
-    } catch (err: any) {
+    } catch (err) {
         console.error('Registration error:', err);
-        if (err.code === '23505') {
-            // PostgreSQL unique_violation error code
-            return res.status(409).json({ error: 'Email already exists' });
+
+        if (err instanceof Error) {
+            return res.status(500).json({ error: err.message });
         }
+
         return res.status(500).json({ error: 'Something went wrong' });
     }
 }
