@@ -34,7 +34,7 @@ export default function Post({ blog, title, setTitle, content, setContent, setEd
 
     return (
         <>
-            <form onSubmit={handleEditSubmit} className='form'>
+            <form onSubmit={handleEditSubmit} className='post'>
                 <h2>Edit Post</h2>
                 <input
                     value={title}
