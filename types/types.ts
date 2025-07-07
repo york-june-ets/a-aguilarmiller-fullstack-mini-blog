@@ -3,6 +3,7 @@ export type Blog = {
     title: string;
     content: string;
     author: string;
+    createdOn: Date;
 };
 
 export type BlogPageProps = {

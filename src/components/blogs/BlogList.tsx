@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 export default function BlogList({ blogs }: any) {
+
+    console.log(blogs)
     return (
         <div className="card-container">
             {blogs.map((blog: any, index: any) => (
@@ -24,7 +26,8 @@ export default function BlogList({ blogs }: any) {
                         className="card-image"
                     />
                     <h2>{blog.title}</h2>
-                    <p>Sample small text. Lorem ipsum dolor sit amet.</p>
+                    <p>Written: {blog.createdOn}</p>
+                    <p>{blog.content}</p>
                     <Link href={`/blogs/${blog.id}`}>
                         <button className="button">Read More</button>
                     </Link>

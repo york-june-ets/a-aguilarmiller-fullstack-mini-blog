@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { query } from '@/pages/api/_helper';
 import { useState } from 'react';
-import Post from '@/components/blogs/Post';
-import EditPost from '@/components/blogs/EditPost';
+import Post from '@/components/blogs/EditPost';
+import EditPost from '@/components/blogs/Post';
 
 
 interface Blog {
@@ -57,7 +57,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { id } = params as { id: string };
 
     const { rows } = await query(
-        `SELECT posts.id, posts.title, posts.content, posts.user_id, users.email AS author FROM posts
+        `SELECT posts.id, posts.title, posts.content, posts.createdOn AS "createdOn", posts.user_id, users.email AS author FROM posts
      JOIN users ON posts.user_id = users.id
      WHERE posts.id = $1`,
         [id]
@@ -65,8 +65,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     if (!rows[0]) return { notFound: true };
 
+    const blog = {
+        ...rows[0],
+        createdOn: rows[0].createdOn.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }),
+    }
+
     return {
-        props: { blog: rows[0] },
+        props: { blog },
         revalidate: 10,
     };
 }

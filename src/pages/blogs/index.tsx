@@ -53,15 +53,26 @@ export default function BlogMainPage({ blogs }: BlogPageProps) {
 
 export const getStaticProps: GetStaticProps<BlogPageProps> = async () => {
     const { rows } = await query(`
-    SELECT posts.id, posts.title, posts.content, users.email AS author
+    SELECT posts.id, posts.title, posts.content, posts.createdOn AS "createdOn", users.email AS author
     FROM posts
     JOIN users ON posts.user_id = users.id
     ORDER BY posts.id DESC
   `);
 
+
+    const blogs = rows.map((blog) => ({
+        ...blog,
+        createdOn: blog.createdOn.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }),
+    }))
+
     return {
         props: {
-            blogs: rows,
+            blogs,
         },
         revalidate: 10,
     };
