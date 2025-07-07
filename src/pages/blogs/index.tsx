@@ -9,10 +9,10 @@ import CreatePost from "@/components/blogs/CreatePost";
 import BlogList from "@/components/blogs/BlogList";
 
 export default function BlogMainPage({ blogs }: BlogPageProps) {
-    const [error, setError] = useState('');
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [createPost, setCreatePost] = useState(false);
+    const [error, setError] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
+    const [content, setContent] = useState<string>('');
+    const [createPost, setCreatePost] = useState<boolean>(false);
     const { user, setUser } = useUser();
     const router = useRouter();
 
